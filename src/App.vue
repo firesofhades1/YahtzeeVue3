@@ -1,7 +1,10 @@
 <script setup>
 import ThrownDice from './components/ThrownDice.vue'
 import ScoreTale from "./components/ScoreTable.vue"
-let rolls = [];
+
+const newRoll = (count) => {
+  console.table(count);
+}
 </script>
 
 <template>
@@ -10,7 +13,7 @@ let rolls = [];
             <h1>Yathzee</h1>
         </header>
 
-        <ThrownDice :rollArray="rolls"/>
+        <ThrownDice @pushRoll="newRoll"/>
 
         <div class="round">
             <p id="rounds"></p>
