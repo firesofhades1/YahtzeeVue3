@@ -7,24 +7,24 @@ const largeMask = 0b011111;
 
 const props = defineProps({ newCount: Array });
 
-const top = ref(computed(() => {
-    return {
-        "ones": props.newCount[0].amount * 1,
-        "twos": props.newCount[1].amount * 2,
-        "threes": props.newCount[2].amount * 3,
-        "fours": props.newCount[3].amount * 4,
-        "fives": props.newCount[4].amount * 5,
-        "sixes": props.newCount[5].amount * 6
-    }
-}));
+const topScores = computed(() => {
+    return [
+        props.newCount[0].amount * 1,
+        props.newCount[1].amount * 2,
+        props.newCount[2].amount * 3,
+        props.newCount[3].amount * 4,
+        props.newCount[4].amount * 5,
+        props.newCount[5].amount * 6
+    ]
+});
 
 const total = computed(() => {
-    return top.value.ones +
-        top.value.twos +
-        top.value.threes +
-        top.value.fours +
-        top.value.fives +
-        top.value.sixes;
+    return topScores.value[0] +
+        topScores.value[1] +
+        topScores.value[2] +
+        topScores.value[3] +
+        topScores.value[4] +
+        topScores.value[5];
 });
 const bonus = computed(() => {
     return total.value > 63 ? 35 : 0;
@@ -34,11 +34,11 @@ const total1 = computed(() => {
 });
 
 const threeKindScore = computed(() => {
-    return countCheck(3) ? total : 0;
+    return countCheck(3) ? total.value : 0;
 });
 
 const fourKindScore = computed(() => {
-    return countCheck(4) ? total : 0;
+    return countCheck(4) ? total.value : 0;
 });
 
 const fullHouseScore = computed(() => {
@@ -57,7 +57,7 @@ const smallStraightScore = computed(() => {
     const flags = getStraightFlags();
     return bitMatch(flags, smallMask, 2) ? 30 : 0;
 })
-      
+
 const largeStraightScore = computed(() => {
     const flags = getStraightFlags();
     return bitMatch(flags, largeMask, 1) ? 40 : 0;
@@ -95,9 +95,9 @@ const countCheck = (amount, mode = "default") => {
 const getStraightFlags = () => {
     const flag = [0, 1, 2, 4, 8, 16, 32];
     let straightFlags = 0b000000;
-    
+
     for (let i = 0; i < 6; i++) {
-        if(props.newCount[i].amount > 0) straightFlags += flag[i];  
+        if (props.newCount[i].amount > 0) straightFlags += flag[i];
     }
     return straightFlags;
 }
@@ -139,7 +139,7 @@ const bitMatch = (flags, mask, shift) => {
                 <td class="noBorderRight">enen</td>
                 <td class="dicePreview noBorderLeft">&#x2680;</td>
                 <td class="howToScore">waarde van alle enen</td>
-                <td id="aces1" class="fillFont keepScore">{{ top.ones }}</td>
+                <td id="aces1" class="fillFont keepScore">{{ topScores[0] }}</td>
                 <td id="aces2" class="fillFont keepScore"></td>
                 <td id="aces3" class="fillFont keepScore"></td>
                 <td id="aces4" class="fillFont keepScore"></td>
@@ -149,7 +149,7 @@ const bitMatch = (flags, mask, shift) => {
                 <td class="noBorderRight">tweeën</td>
                 <td class="dicePreview noBorderLeft">&#x2681;</td>
                 <td class="howToScore">waarde van alle tweeën</td>
-                <td id="twos1" class="fillFont keepScore">{{ top.twos }}</td>
+                <td id="twos1" class="fillFont keepScore">{{ topScores[1] }}</td>
                 <td id="twos2" class="fillFont keepScore"></td>
                 <td id="twos3" class="fillFont keepScore"></td>
                 <td id="twos4" class="fillFont keepScore"></td>
@@ -159,7 +159,7 @@ const bitMatch = (flags, mask, shift) => {
                 <td class="noBorderRight">drieën</td>
                 <td class="dicePreview noBorderLeft">&#x2682;</td>
                 <td class="howToScore">waarde van alle drieën</td>
-                <td id="threes1" class="fillFont keepScore">{{ top.threes }}</td>
+                <td id="threes1" class="fillFont keepScore">{{ topScores[2] }}</td>
                 <td id="threes2" class="fillFont keepScore"></td>
                 <td id="threes3" class="fillFont keepScore"></td>
                 <td id="threes4" class="fillFont keepScore"></td>
@@ -169,7 +169,7 @@ const bitMatch = (flags, mask, shift) => {
                 <td class="noBorderRight">vieren</td>
                 <td class="dicePreview noBorderLeft">&#x2683;</td>
                 <td class="howToScore">waarde van alle vieren</td>
-                <td id="fours1" class="fillFont keepScore">{{ top.fours }}</td>
+                <td id="fours1" class="fillFont keepScore">{{ topScores[3] }}</td>
                 <td id="fours2" class="fillFont keepScore"></td>
                 <td id="fours3" class="fillFont keepScore"></td>
                 <td id="fours4" class="fillFont keepScore"></td>
@@ -179,7 +179,7 @@ const bitMatch = (flags, mask, shift) => {
                 <td class="noBorderRight">vijven</td>
                 <td class="dicePreview noBorderLeft">&#x2684;</td>
                 <td class="howToScore">waarde van alle vijven</td>
-                <td id="fives1" class="fillFont keepScore">{{ top.fives }}</td>
+                <td id="fives1" class="fillFont keepScore">{{ topScores[4] }}</td>
                 <td id="fives2" class="fillFont keepScore"></td>
                 <td id="fives3" class="fillFont keepScore"></td>
                 <td id="fives4" class="fillFont keepScore"></td>
@@ -189,7 +189,7 @@ const bitMatch = (flags, mask, shift) => {
                 <td class="noBorderRight">zessen</td>
                 <td class="dicePreview noBorderLeft">&#x2685;</td>
                 <td class="howToScore">waarde van alle zessen</td>
-                <td id="sixes1" class="fillFont keepScore">{{ top.sixes }}</td>
+                <td id="sixes1" class="fillFont keepScore">{{ topScores[5] }}</td>
                 <td id="sixes2" class="fillFont keepScore"></td>
                 <td id="sixes3" class="fillFont keepScore"></td>
                 <td id="sixes4" class="fillFont keepScore"></td>
