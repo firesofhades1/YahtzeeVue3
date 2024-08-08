@@ -26,7 +26,6 @@ const newRoll = (newCount) => {
         </header>
 
         <ThrownDice @pushRoll="newRoll"/>
-        <ThrownDice @pushRoll="newRoll"/>
 
         <div class="round">
             <p id="rounds"></p>
