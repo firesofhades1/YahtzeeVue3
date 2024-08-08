@@ -1,7 +1,22 @@
 <script setup>
 import ThrownDice from './components/ThrownDice.vue'
 import ScoreTale from "./components/ScoreTable.vue"
-let rolls = [];
+import { ref } from 'vue';
+
+let count = ref([
+    { id: 1, amount: 1 },
+    { id: 2, amount: 1 },
+    { id: 3, amount: 1 },
+    { id: 4, amount: 1 },
+    { id: 5, amount: 1 },
+    { id: 6, amount: 1 }
+  ]);
+
+const newRoll = (newCount) => {
+  count.value = newCount;
+}
+
+
 </script>
 
 <template>
@@ -10,7 +25,7 @@ let rolls = [];
             <h1>Yathzee</h1>
         </header>
 
-        <ThrownDice :rollArray="rolls"/>
+        <ThrownDice @pushRoll="newRoll"/>
 
         <div class="round">
             <p id="rounds"></p>
@@ -22,7 +37,7 @@ let rolls = [];
             <p>Kies welke score je wil vastleggen op het scoreblok.</p>
         </div>
 
-        <ScoreTale/>
+        <ScoreTale :newCount=count />
         
     </div>
 </template>

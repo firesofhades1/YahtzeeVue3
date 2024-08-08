@@ -1,29 +1,29 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-const props = defineProps(["rollArray"]);
-const emit = defineEmits(["update:rollArray"])
+const rollArray = ref([]);
+const emit = defineEmits(["pushRoll"])
 
 const diceIcons = { 1: "&#x2680;", 2: "&#x2681;", 3: "&#x2682;", 4: "&#x2683;", 5: "&#x2684;", 6: "&#x2685;" };
 
-props.rollArray = [1,2,3,4,5];
+rollArray.value = [1,2,3,4,5];
 
 const rollIcons = computed(() => {
     return [
-        diceIcons[props.rollArray[0]],
-        diceIcons[props.rollArray[1]],
-        diceIcons[props.rollArray[2]],
-        diceIcons[props.rollArray[3]],
-        diceIcons[props.rollArray[4]]
+        diceIcons[rollArray.value[0]],
+        diceIcons[rollArray.value[1]],
+        diceIcons[rollArray.value[2]],
+        diceIcons[rollArray.value[3]],
+        diceIcons[rollArray.value[4]]
     ];
 });
 
 const count = ref([
-    { id: 1, amount: 0 },
-    { id: 2, amount: 0 },
-    { id: 3, amount: 0 },
-    { id: 4, amount: 0 },
-    { id: 5, amount: 0 },
+    { id: 1, amount: 1 },
+    { id: 2, amount: 1 },
+    { id: 3, amount: 1 },
+    { id: 4, amount: 1 },
+    { id: 5, amount: 1 },
     { id: 6, amount: 0 }
 ]);
 
@@ -33,17 +33,15 @@ const ThrowDice = () => {
     count.value.forEach((element) => {
         element.amount = 0;
     })
-    rollArray.values = [];
+    rollArray.value = [];
 
     for (let i = 0; i < 5; i++) {
         const roll = Math.ceil(Math.random() * 6);
-        rollArray.values.push(roll);
+        rollArray.value.push(roll);
         count.value[roll - 1].amount++;
     }
+    emit("pushRoll", count.value );
 }
-
-
-
 
 
 </script>
